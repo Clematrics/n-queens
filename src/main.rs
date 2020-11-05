@@ -44,7 +44,7 @@ fn main() {
 					.map(|x| x.to_str())
                     .collect::<Vec<&str>>()[..],
 				)
-                .help(&format!("Select the strategy. A strategy defines when to stop for the user to interact and which intermediate steps are shown.\nDefault is '{}'.\n", StrategySelection::AllSteps.to_str())[..]),
+                .help(&format!("Select the strategy. A strategy defines when to stop for the user to interact and which intermediate steps are shown.\nDefault is '{}'.\n", StrategySelection::SolutionsWithSteps.to_str())[..]),
         )
         .arg(
             Arg::with_name("interaction")
@@ -60,7 +60,7 @@ fn main() {
 					.map(|x| x.to_str())
                     .collect::<Vec<&str>>()[..],
 				)
-                .help(&format!("Select the Interaction Mode. WaitOrTimeout is not yet implemented.\nDefault is '{}'.\n", InteractionMode::NoInteraction.to_str())[..]),
+                .help(&format!("Select the Interaction Mode. WaitOrTimeout is not yet implemented.\nDefault is '{}'.\n", InteractionMode::WaitUser.to_str())[..]),
         )
         .arg(
 			Arg::with_name("stop-after-first")
@@ -77,10 +77,10 @@ fn main() {
     };
 
     let interaction =
-        value_t!(matches, "interaction", InteractionMode).unwrap_or(InteractionMode::NoInteraction);
+        value_t!(matches, "interaction", InteractionMode).unwrap_or(InteractionMode::WaitUser);
 
-    let strategy_selection =
-        value_t!(matches, "strategy", StrategySelection).unwrap_or(StrategySelection::AllSteps);
+    let strategy_selection = value_t!(matches, "strategy", StrategySelection)
+        .unwrap_or(StrategySelection::SolutionsWithSteps);
     match strategy_selection {
         StrategySelection::AllSteps => {
             let driver_selection = matches.value_of("driver").unwrap_or("Console");

@@ -98,8 +98,8 @@ where
 {
     fn execute(&mut self, solver: Solver, strategy: T, interaction_mode: InteractionMode) {
         let mut solver = solver;
-		let mut strategy = strategy;
-		let mut end = false;
+        let mut strategy = strategy;
+        let mut end = false;
 
         self.window.set_light(Light::StickToCamera);
 
@@ -118,45 +118,44 @@ where
                 60.0,
                 &self.font,
                 &Point3::new(1.0, 1.0, 0.0),
-			);
+            );
 
-			if !end {
-				let step = strategy.next_step(&mut solver);
-				if let Some(config) = step {
-					let mut positions = config
-                    .configuration
-                    .into_iter()
-                    .map(|x| x as f32)
-                    .collect::<Vec<f32>>();
-					positions.resize(self.board_size, -1.);
-					let it = self.queens.iter_mut().zip(positions.into_iter());
-					for (i, (queen, pos)) in it.enumerate() {
-						queen.set_local_translation(Translation3::new(pos, 0.0, i as f32));
-					}
-				} else {
-					if let InteractionMode::WaitUser = interaction_mode {
-						for event in self.window.events().iter() {
-							match event.value {
-								WindowEvent::Key(Key::Space, Action::Press, _) => {
-									end = !strategy.has_next_batch(&mut solver);
-								}
-								_ => {}
-							}
-						}
-					}
-					else {
-						end = !strategy.has_next_batch(&mut solver);
-					}
-				}
-			} else {
-				self.window.draw_text(
-					"No other partial solution exists",
-					&Point2::new(0.0, 280.0),
-					60.0,
-					&self.font,
-					&Point3::new(1.0, 0.0, 0.0),
-				);
-			}
+            if !end {
+                let step = strategy.next_step(&mut solver);
+                if let Some(config) = step {
+                    let mut positions = config
+                        .configuration
+                        .into_iter()
+                        .map(|x| x as f32)
+                        .collect::<Vec<f32>>();
+                    positions.resize(self.board_size, -1.);
+                    let it = self.queens.iter_mut().zip(positions.into_iter());
+                    for (i, (queen, pos)) in it.enumerate() {
+                        queen.set_local_translation(Translation3::new(pos, 0.0, i as f32));
+                    }
+                } else {
+                    if let InteractionMode::WaitUser = interaction_mode {
+                        for event in self.window.events().iter() {
+                            match event.value {
+                                WindowEvent::Key(Key::Space, Action::Press, _) => {
+                                    end = !strategy.has_next_batch(&mut solver);
+                                }
+                                _ => {}
+                            }
+                        }
+                    } else {
+                        end = !strategy.has_next_batch(&mut solver);
+                    }
+                }
+            } else {
+                self.window.draw_text(
+                    "No other partial solution exists",
+                    &Point2::new(0.0, 280.0),
+                    60.0,
+                    &self.font,
+                    &Point3::new(1.0, 0.0, 0.0),
+                );
+            }
 
             self.window.render_with_camera(&mut self.arc_ball);
         }

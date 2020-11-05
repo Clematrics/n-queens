@@ -5,6 +5,7 @@
 - Install `rust`. Instructions can be found [here](https://www.rust-lang.org/tools/install))
 - Clone this repository
 - In the repository folder, use the command `cargo build --release`
+- Eat some cookies while it compiles (it might take two or three minutes to gather all packages necessary and to compile everything)
 - To run, you can either launch the program from the `target\release` folder, or use the command `cargo run --release -- [program args]`
 
 ## Options' details
@@ -70,11 +71,11 @@ OPTIONS:
                                           Default is 'Console'.
                                            [possible values: Console, 3D]
         --interaction <InterationMode>    Select the Interaction Mode. WaitOrTimeout is not yet implemented.
-                                          Default is 'NoInteraction'.
+                                          Default is 'WaitUser'.
                                            [possible values: NoInteraction, WaitUser, WaitOrTimeout]
         --strat <Strategy>                Select the strategy. A strategy defines when to stop for the user to interact
                                           and which intermediate steps are shown.
-                                          Default is 'AllSteps'.
+                                          Default is 'SolutionsWithSteps'.
                                            [possible values: AllSteps, SolutionsWithSteps, OnlySolutions, OnlyCount]
 
 ARGS:
