@@ -8,21 +8,21 @@
 - Eat some cookies while it compiles (it might take two or three minutes to gather all packages necessary and to compile everything)
 - To run, you can either launch the program from the `target\release` folder, or use the command `cargo run --release -- [program args]`
 
-## Options' details
+## Options details
 
 ### Strategy
 
-Each exploration of the solutions' space is managed by a strategy. A strategy will partition the solutions' space in batches. Each batches consist of (eventually partial) solutions which are all displayed by the driver. When a batch ends, the driver will wait for the user if such interaction is enabled.
+Each exploration of the solutions space is managed by a strategy. A strategy will partition the solutions space in batches. Each batches consist of (eventually partial) solutions which are all displayed by the driver. When a batch ends, the driver will wait for the user if such interaction is enabled.
 
 - `AllSteps`: Each batch holds the next partial solution.
 - `SolutionsWithSteps`: Each batch holds the all partial solutions until a complete solution is found. Thus, all partial solutions will be displayed, and once a complete solution is found, it is displayed and the driver eventually wait for the user.
 - `OnlySolutions`: Each batch holds the next complete solution. No partial solution is ever shown.
-- `OnlyCount`: The batch is empty, and no solution is displayed. However, the solutions' space is still fully explored to count the solutions.
+- `OnlyCount`: The batch is empty, and no solution is displayed. However, the solutions space is still fully explored to count the solutions.
 
 ### Interaction Mode
 
 - `NoInteraction`: All solutions selected by the strategy option are displayed one after the other
-- `WaitUser`: Wait some input from the user to continue the exploration of the solutions' space after a batch is finished.
+- `WaitUser`: Wait some input from the user to continue the exploration of the solutions space after a batch is finished.
 - `WaitOrTimeout`: Not yet implemented. If selected, will behave like `WaitUser`
 
 
@@ -80,4 +80,25 @@ OPTIONS:
 
 ARGS:
     <size>    The size of the board, and so the number of queens. Default is 7
+```
+
+## Code organisation
+
+```
+root
+├─ resources         contains the resources of this repo, like 3d models, images
+└─ src               source code folder
+   ├─ drivers        contains the source of each driver
+   │  ├─ board_3d    the source folder of the 3d driver
+   │  │  └── ...
+   │  └─ console.rs  the source for the console driver
+   ├─ strategies     contains the source of each strategy
+   ├─ driver.rs      defines some types and the requirements a driver must meet
+   ├─ main.rs        main program, handles command-line options and dispatches them
+   ├─ solver.rs      n-queens solver. The function 'search' gives the next partial
+   │                 solution. 'backtrack_once' backtrack only one line.
+   │                 The solver was implemented with an iterator approach to have
+   │                 more flexibility. Using coroutines would have been ideal but
+   │                 the language does not fully support this feature
+   └─ strategy.rs    defines the requirements a strategy must meet
 ```
